@@ -5,58 +5,45 @@ const testFile = "src/inputs/day-one-test.txt";
 
 const currentFile = dataFile;
 
-interface Elf {
-  calories: number[];
-}
+type Elf = number[];
 
 const readFile = (localFilePath: string): Elf[] => {
   let data = fs.readFileSync(localFilePath).toString("utf-8");
   let textByLine = data.split("\n");
   let allElves: Elf[] = [];
-  let tempElf: Elf = { calories: [] };
+  let tempElf: Elf = [];
   textByLine.forEach((element, index) => {
     if (element !== "") {
-      tempElf.calories.push(Number(element));
+      tempElf.push(Number(element));
     }
     if (element === "") {
       allElves.push(tempElf);
-      tempElf = { calories: [] };
+      tempElf = [];
     }
     if (textByLine.length - 1 === index) {
-      allElves.push({ calories: [Number(element)] });
+      allElves.push([Number(element)]);
     }
   });
 
   return allElves;
 };
 
-const part1 = (allElves: Elf[]): number => {
-  let mostCallories = 0;
-  allElves.forEach((elf) => {
-    const sum = elf.calories.reduce((accumulator, value) => {
+const calculateCaloriesOfElves = (allElves: Elf[]): number[] => {
+  const elvesTotalCalory = allElves.map((elf) => {
+    return elf.reduce((accumulator, value) => {
       return accumulator + value;
     }, 0);
-    if (sum > mostCallories) {
-      mostCallories = sum;
-    }
   });
-  return mostCallories;
+  return elvesTotalCalory.sort((a, b) => b - a);
+};
+
+const part1 = (allElves: Elf[]): number => {
+  return calculateCaloriesOfElves(allElves)[0];
 };
 
 const part2 = (allElves: Elf[]): number => {
-  let topThreeElves = [0, 0, 0];
-  let sums: number[] = [];
-  allElves.forEach((elf) => {
-    const sum = elf.calories.reduce((accumulator, value) => {
-      return accumulator + value;
-    }, 0);
-    sums.push(sum);
-  });
-  sums.sort((a, b) => b - a);
-  topThreeElves.forEach((n, i) => {
-    topThreeElves[i] = sums[i];
-  });
-  return topThreeElves.reduce((accumulator, value) => {
+  const allCaloriesElves = calculateCaloriesOfElves(allElves);
+  return allCaloriesElves.slice(0, 3).reduce((accumulator, value) => {
     return accumulator + value;
   }, 0);
 };

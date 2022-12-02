@@ -7,6 +7,4 @@ switch (Day) {
   case 1:
     dayOne();
     break;
-  case 2:
-    da;
 }
