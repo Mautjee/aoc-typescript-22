@@ -1,10 +1,5 @@
 import { dayOne } from "./day-one";
-type Days = 1 | 2 | 3 | 4 | 5;
+import { dayTwo } from "./day-two";
 
-let Day: Days = 1;
-
-switch (Day) {
-  case 1:
-    dayOne();
-    break;
-}
+//dayOne();
+dayTwo();
